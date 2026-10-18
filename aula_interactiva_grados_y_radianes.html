@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matemáticas I (1.º Bachillerato) — Del Grado al Radián</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <!-- KaTeX para renderizado matemático impecable -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            600: '#1d4ed8',
+                            700: '#144178',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            green: '#19824b',
+                            red: '#be2828'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        /* Personalización de barras de desplazamiento */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .math-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .math-card:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-blue-600 selection:text-white">
+
+    <!-- Cabecera Principal -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between py-3 gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand-700 flex items-center justify-center text-white font-bold text-xl shadow-md">
+                        \(\pi\)
+                    </div>
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-brand-600 block">Matemáticas I • 1.º Bachillerato</span>
+                        <h1 class="text-lg sm:text-xl font-bold text-slate-900 leading-tight">Medición de Ángulos: Del Grado al Radián</h1>
+                    </div>
+                </div>
+
+                <!-- Navegación por pestañas -->
+                <nav class="flex overflow-x-auto pb-1 md:pb-0 gap-1.5 no-scrollbar" aria-label="Secciones">
+                    <button onclick="switchTab('teoria')" id="tab-btn-teoria" class="tab-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap bg-brand-700 text-white shadow-sm">
+                        1. Teoría y Conceptos
+                    </button>
+                    <button onclick="switchTab('laboratorio')" id="tab-btn-laboratorio" class="tab-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                        2. Laboratorio Interactivo
+                    </button>
+                    <button onclick="switchTab('conversion')" id="tab-btn-conversion" class="tab-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                        3. Conversión y Círculo
+                    </button>
+                    <button onclick="switchTab('ejercicios')" id="tab-btn-ejercicios" class="tab-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100">
+                        4. Ejercicios (8)
+                    </button>
+                    <button onclick="switchTab('latex')" id="tab-btn-latex" class="tab-btn px-3.5 py-2 rounded-lg text-sm font-semibold transition-all whitespace-nowrap text-slate-600 hover:bg-slate-100 flex items-center gap-1.5">
+                        <span>5. Código \(\text{\LaTeX}\) + TikZ</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- =============================================================== -->
+        <!-- SECCIÓN 1: TEORÍA Y CONCEPTOS                                   -->
+        <!-- =============================================================== -->
+        <section id="sec-teoria" class="tab-content space-y-10">
+            
+            <!-- Hero / El Gancho Inicial -->
+            <div class="bg-gradient-to-br from-brand-800 via-brand-700 to-blue-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-blue-100 text-xs font-medium backdrop-blur-sm">
+                            <span>🚲 El problema de hablar dos idiomas distintos</span>
+                        </div>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">
+                            La paradoja de la rueda de bicicleta
+                        </h2>
+                        <p class="text-blue-100 leading-relaxed text-base sm:text-lg">
+                            Imagina que la rueda de tu bicicleta tiene un radio de \(r = 35\text{ cm}\). Si al tomar una curva la rueda gira un ángulo de \(45^\circ\), <strong class="text-white underline decoration-amber-400 decoration-2">¿cuántos centímetros de asfalto has recorrido?</strong>
+                        </p>
+                        <div class="bg-slate-900/40 border border-white/10 rounded-xl p-4 text-sm text-blue-50 space-y-2">
+                            <p>
+                                Con <strong>grados sexagesimales</strong>, el número \(45\) no guarda relación directa con los centímetros avanzados. Tienes que calcular el perímetro total (\(2\pi r\)) y plantear una proporción con \(360^\circ\):
+                            </p>
+                            <div class="py-1 text-center text-base font-semibold text-amber-300">
+                                $$s = 2\pi \cdot 35 \cdot \frac{45^\circ}{360^\circ} \approx 27{,}49\text{ cm}$$
+                            </div>
+                            <p class="text-xs text-blue-200">
+                                <strong>La pregunta clave:</strong> ¿Y si diseñáramos una unidad angular que nos dijera <em>directamente</em> cuántos radios hemos avanzado sobre el borde del círculo? Esa unidad es el <strong>radián</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mini Simulador de la Rueda -->
+                    <div class="lg:col-span-5 bg-white text-slate-800 rounded-xl p-5 shadow-lg space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <span class="font-bold text-slate-900 text-sm">Comprobador Rápido de la Rueda (\(r = 35\text{ cm}\))</span>
+                            <span class="px-2 py-0.5 text-xs font-semibold bg-emerald-100 text-emerald-800 rounded-md">Interactivo</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div>
+                                <div class="flex justify-between text-xs font-medium text-slate-600 mb-1">
+                                    <span>Ángulo de giro de la rueda:</span>
+                                    <span id="bike-angle-label" class="font-bold text-brand-700">45° (π/4 rad)</span>
+                                </div>
+                                <input type="range" id="bike-slider" min="15" max="360" step="15" value="45" oninput="updateBikeDemo(this.value)" class="w-full accent-brand-700 cursor-pointer">
+                            </div>
+                            <div class="grid grid-cols-2 gap-3 pt-1">
+                                <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                    <span class="text-xs text-slate-500 block">Ángulo en radianes (\(\theta\))</span>
+                                    <span id="bike-rad-val" class="text-lg font-bold text-brand-700">0,785 rad</span>
+                                    <span class="text-[11px] text-slate-400 block">radios avanzados</span>
+                                </div>
+                                <div class="bg-emerald-50 p-3 rounded-lg border border-emerald-200">
+                                    <span class="text-xs text-emerald-700 block">Asfalto recorrido (\(s = \theta \cdot r\))</span>
+                                    <span id="bike-arc-val" class="text-lg font-bold text-emerald-800">27,49 cm</span>
+                                    <span class="text-[11px] text-emerald-600 block">cálculo directo</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloque 2: Por qué 360 grados -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex items-center gap-2 text-brand-700 font-bold text-sm uppercase tracking-wider">
+                        <span>Sección 2 • Contexto Histórico</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-900">
+                        El Sistema Sexagesimal: ¿Por qué \(360^\circ\) y no \(100^\circ\)?
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Dividir una vuelta completa en \(360\) partes iguales no es una propiedad geométrica de los círculos, sino una herencia cultural de la antigua <strong>Babilonia</strong> basada en dos razones prácticas:
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="p-4 rounded-xl bg-amber-50/70 border border-amber-200/80">
+                            <h4 class="font-bold text-amber-900 mb-1 flex items-center gap-1.5">
+                                <span>☀️</span> 1. Motivo Astronómico
+                            </h4>
+                            <p class="text-sm text-amber-800 leading-relaxed">
+                                Los astrónomos babilonios estimaban el año solar en unos \(360\) días, observando que las constelaciones se desplazaban aproximadamente «un grado por día».
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-xl bg-blue-50/70 border border-blue-200/80">
+                            <h4 class="font-bold text-blue-900 mb-1 flex items-center gap-1.5">
+                                <span>🧮</span> 2. Aritmética sin decimales
+                            </h4>
+                            <p class="text-sm text-blue-800 leading-relaxed">
+                                Usaban base \(60\). El número \(360\) es <em>altamente compuesto</em>: tiene <strong>24 divisores exactos</strong>, permitiendo fraccionar círculos sin decimales.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">
+                            Los 24 divisores exactos de 360 (haz clic en cualquiera para ver cómo divide el círculo):
+                        </p>
+                        <div class="flex flex-wrap gap-1.5" id="divisors-container">
+                            <!-- Rellenado dinámicamente o estático -->
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">1</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">2</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">3</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">4</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">5</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">6</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">8</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">9</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">10</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">12</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">15</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">18</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">20</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">24</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">30</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">36</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">40</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">45</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">60</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">72</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">90</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">120</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">180</span>
+                            <span class="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-md text-xs font-mono font-semibold">360</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Limitación en Cálculo -->
+                <div class="bg-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-300 text-xs font-semibold uppercase tracking-wider">
+                            ¿Por qué no basta en Bachillerato?
+                        </span>
+                        <h4 class="text-lg font-bold text-white">
+                            La deformación de escalas en Análisis Matemático
+                        </h4>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Cuando estudiamos la función \(f(x) = \sin(x)\), el valor del seno oscila entre \(-1\) y \(1\). Si medimos \(x\) en grados (de \(0\) a \(360\)), la gráfica queda extremadamente estirada horizontalmente.
+                        </p>
+                        <p class="text-sm text-slate-300 leading-relaxed">
+                            Solo cuando medimos \(x\) en <strong>radianes</strong> (misma escala de longitud para ambos ejes), la pendiente en el origen es limpia (\(\lim_{x\to 0} \frac{\sin x}{x} = 1\)) y la derivada de \(\sin(x)\) es exactamente \(\cos(x)\).
+                        </p>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-400 flex items-center justify-between">
+                        <span>En grados: \((\sin x)' = \frac{\pi}{180}\cos x\) ❌</span>
+                        <span class="text-emerald-400 font-semibold">En rad: \((\sin x)' = \cos x\) ✔️</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloque 3: Definición de Radián y Gráficos TikZ en SVG -->
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-8">
+                <div class="max-w-3xl space-y-2">
+                    <div class="text-brand-700 font-bold text-sm uppercase tracking-wider">
+                        Sección 3 • El Concepto Fundamental
+                    </div>
+                    <h3 class="text-2xl font-bold text-slate-900">
+                        El Radián: Medir el giro usando el propio radio
+                    </h3>
+                    <p class="text-slate-600 leading-relaxed">
+                        Imagina que cortas un trozo de cuerda que mide exactamente lo mismo que el radio \(r\) de una circunferencia. Si apoyas y curvas esa cuerda sobre el borde de la circunferencia, la abertura que se forma desde el centro hasta los extremos de la cuerda es <strong>\(1\text{ radián}\) (\(1\text{ rad}\))</strong>.
+                    </p>
+                </div>
+
+                <!-- Caja Destacada Tipo tcolorbox -->
+                <div class="rounded-xl border-2 border-brand-700 bg-brand-50/70 overflow-hidden shadow-sm">
+                    <div class="bg-brand-700 text-white px-5 py-2.5 font-bold text-sm flex items-center justify-between">
+                        <span>Definición Formal de Radián</span>
+                        <span class="font-mono text-xs bg-white/20 px-2 py-0.5 rounded">Unidad SI</span>
+                    </div>
+                    <div class="p-5 text-slate-800 space-y-3">
+                        <p class="text-sm sm:text-base leading-relaxed">
+                            Un <strong>radián</strong> (\(\text{rad}\)) es la medida de un ángulo central cuyo arco correspondiente tiene una longitud igual al radio de la circunferencia. Para cualquier ángulo \(\theta\), su medida en radianes es el cociente entre la longitud del arco abarcado (\(s\)) y el radio (\(r\)):
+                        </p>
+                        <div class="bg-white rounded-lg p-3 border border-blue-200 text-center text-lg font-semibold text-brand-800">
+                            $$\theta \text{ (en radianes)} = \frac{s}{r} \quad \Longleftrightarrow \quad \mathbf{s = \theta \cdot r}$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dos diagramas SVG equivalentes a los TikZ del documento LaTeX -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 pt-2">
+                    <!-- Diagrama 1: Construcción de 1 radián -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 flex flex-col items-center">
+                        <h4 class="font-bold text-slate-800 text-sm mb-3 self-start flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                            Figura 1: Construcción geométrica de \(1\text{ rad}\)
+                        </h4>
+                        <svg viewBox="0 0 380 260" class="w-full max-w-md h-auto">
+                            <!-- Circunferencia punteada -->
+                            <circle cx="150" cy="145" r="95" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5"/>
+                            <!-- Sector de 1 radián (57.2958 grados) -->
+                            <!-- Punto A: (245, 145). Punto B para -57.3 deg en SVG: x = 150 + 95*cos(57.3) = 201.3, y = 145 - 95*sin(57.3) = 65.1 -->
+                            <path d="M 150 145 L 245 145 A 95 95 0 0 0 201.3 65.1 Z" fill="#dbeafe" fill-opacity="0.7"/>
+                            <!-- Arco interno del ángulo -->
+                            <path d="M 188 145 A 38 38 0 0 0 170.5 113" fill="none" stroke="#144178" stroke-width="2"/>
+                            <text x="195" y="125" fill="#144178" font-size="12" font-weight="bold">θ = 1 rad</text>
+                            <text x="195" y="138" fill="#475569" font-size="10">(≈ 57,3°)</text>
+                            <!-- Radios -->
+                            <line x1="150" y1="145" x2="245" y2="145" stroke="#144178" stroke-width="2.5"/>
+                            <line x1="150" y1="145" x2="201.3" y2="65.1" stroke="#144178" stroke-width="2.5"/>
+                            <text x="185" y="163" fill="#144178" font-size="12" font-weight="bold">Radio (r)</text>
+                            <text x="160" y="98" fill="#144178" font-size="12" font-style="italic">r</text>
+                            <!-- Arco exterior verde s = r -->
+                            <path d="M 245 145 A 95 95 0 0 0 201.3 65.1" fill="none" stroke="#19824b" stroke-width="4" stroke-linecap="round"/>
+                            <text x="242" y="96" fill="#19824b" font-size="13" font-weight="bold">Arco s = r</text>
+                            <text x="242" y="110" fill="#19824b" font-size="10">(igual al radio)</text>
+                            <!-- Puntos O, A, B -->
+                            <circle cx="150" cy="145" r="3.5" fill="#0f172a"/>
+                            <text x="135" y="158" fill="#0f172a" font-size="12" font-style="italic">O</text>
+                            <circle cx="245" cy="145" r="4" fill="#144178"/>
+                            <text x="252" y="155" fill="#144178" font-size="12" font-weight="bold">A</text>
+                            <circle cx="201.3" cy="65.1" r="4" fill="#19824b"/>
+                            <text x="205" y="58" fill="#19824b" font-size="12" font-weight="bold">B</text>
+                        </svg>
+                        <p class="text-xs text-slate-600 text-center mt-2">
+                            El «triángulo curvo» \(OAB\) tiene sus tres lados de longitud \(r\), por lo que es casi un triángulo equilátero (\(60^\circ\)), pero ligeramente más cerrado por la curvatura del arco: \(\mathbf{1\text{ rad} \approx 57^\circ\, 17'\, 45''}\).
+                        </p>
+                    </div>
+
+                    <!-- Diagrama 2: Invarianza del radián -->
+                    <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/50 flex flex-col items-center justify-between">
+                        <h4 class="font-bold text-slate-800 text-sm mb-3 self-start flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-brand-700"></span>
+                            Figura 2: Invarianza respecto al tamaño del círculo
+                        </h4>
+                        <svg viewBox="0 0 380 260" class="w-full max-w-md h-auto">
+                            <!-- Sector grande -->
+                            <path d="M 70 200 L 290 200 A 220 220 0 0 0 211.4 31.5 Z" fill="#eff6ff"/>
+                            <!-- Líneas guía -->
+                            <line x1="70" y1="200" x2="315" y2="200" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                            <line x1="70" y1="200" x2="227" y2="12" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,4"/>
+                            <!-- Radios principales -->
+                            <line x1="70" y1="200" x2="290" y2="200" stroke="#144178" stroke-width="2.5"/>
+                            <line x1="70" y1="200" x2="211.4" y2="31.5" stroke="#144178" stroke-width="2.5"/>
+                            <!-- Arco ángulo theta -->
+                            <path d="M 120 200 A 50 50 0 0 0 102.1 161.7" fill="none" stroke="#144178" stroke-width="2"/>
+                            <text x="126" y="182" fill="#144178" font-size="13" font-weight="bold">θ</text>
+                            <!-- Arco s1 (r1 = 120) -->
+                            <path d="M 190 200 A 120 120 0 0 0 147.1 108.1" fill="none" stroke="#19824b" stroke-width="3.5"/>
+                            <text x="188" y="150" fill="#19824b" font-size="13" font-weight="bold">s₁</text>
+                            <!-- Arco s2 (r2 = 220) -->
+                            <path d="M 290 200 A 220 220 0 0 0 211.4 31.5" fill="none" stroke="#be2828" stroke-width="3.5"/>
+                            <text x="275" y="110" fill="#be2828" font-size="13" font-weight="bold">s₂</text>
+                            <!-- Etiquetas r1 y r2 -->
+                            <text x="125" y="218" fill="#19824b" font-size="12" font-weight="bold">r₁</text>
+                            <text x="235" y="218" fill="#be2828" font-size="12" font-weight="bold">r₂</text>
+                            <circle cx="70" cy="200" r="3.5" fill="#0f172a"/>
+                        </svg>
+                        <div class="text-xs text-slate-600 text-center space-y-1 mt-2">
+                            <p>
+                                <strong>1. No depende del radio:</strong> Por semejanza geométrica, \(\theta = \frac{s_1}{r_1} = \frac{s_2}{r_2}\).
+                            </p>
+                            <p>
+                                <strong>2. Es adimensional:</strong> Al dividir longitud entre longitud (\(\text{cm}/\text{cm}\)), las unidades se cancelan.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- El Puente hacia Pi y Alerta -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-2 items-center">
+                    <div class="lg:col-span-7 space-y-3">
+                        <h4 class="text-lg font-bold text-slate-900">
+                            El puente hacia \(\pi\): ¿Cuántos radianes tiene una vuelta completa?
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed">
+                            Preguntarnos cuántos radianes mide una vuelta completa (\(360^\circ\)) equivale a preguntar: <strong>¿cuántas veces cabe el radio en el perímetro total de la circunferencia?</strong> Como la longitud de la circunferencia es \(L = 2\pi r\):
+                        </p>
+                        <div class="bg-slate-100 rounded-xl p-3 text-center text-sm sm:text-base font-medium">
+                            $$\theta_{\text{vuelta completa}} = \frac{L}{r} = \frac{2\pi r}{r} = 2\pi\text{ rad} \approx 6{,}283\text{ rad} \quad \Longrightarrow \quad \boxed{\mathbf{180^\circ = \pi\text{ rad}}}$$
+                        </div>
+                    </div>
+
+                    <!-- Caja de Alerta Roja -->
+                    <div class="lg:col-span-5 rounded-xl border-2 border-accent-red bg-red-50/70 overflow-hidden">
+                        <div class="bg-accent-red text-white px-4 py-2 font-bold text-xs uppercase tracking-wider flex items-center gap-2">
+                            <span>⚠️ ¡Cuidado con un error muy común!</span>
+                        </div>
+                        <div class="p-4 text-xs sm:text-sm text-red-950 space-y-2 leading-relaxed">
+                            <p>
+                                <strong>\(\pi\) NO es una unidad ni significa «radianes».</strong> \(\pi\) es simplemente el número \(3{,}14159\dots\)
+                            </p>
+                            <p>
+                                Decir que un ángulo llano (\(180^\circ\)) mide \(\pi\text{ rad}\) significa que su arco mide un poco más de tres radios (\(3{,}1416\text{ radios}\)). Dejamos \(\pi\) indicado para no perder exactitud decimal.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- SECCIÓN 2: LABORATORIO INTERACTIVO                              -->
+        <!-- =============================================================== -->
+        <section id="sec-laboratorio" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Simulador Geométrico en Tiempo Real</span>
+                        <h2 class="text-2xl font-bold text-slate-900">Laboratorio: Enrollando el radio sobre el arco</h2>
+                        <p class="text-sm text-slate-600">
+                            Ajusta el ángulo o el radio y observa cómo cada marca verde sobre el borde equivale exactamente a \(1\text{ radio}\) de longitud.
+                        </p>
+                    </div>
+                    <!-- Botones de ángulos notables -->
+                    <div class="flex flex-wrap gap-1.5">
+                        <button onclick="setLabAngle(57.2958)" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-emerald-600 text-white hover:bg-emerald-700 transition shadow-sm">
+                            1 rad (57,3°)
+                        </button>
+                        <button onclick="setLabAngle(30)" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                            30° (π/6)
+                        </button>
+                        <button onclick="setLabAngle(45)" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                            45° (π/4)
+                        </button>
+                        <button onclick="setLabAngle(60)" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                            60° (π/3)
+                        </button>
+                        <button onclick="setLabAngle(90)" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                            90° (π/2)
+                        </button>
+                        <button onclick="setLabAngle(180)" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                            180° (π)
+                        </button>
+                        <button onclick="setLabAngle(360)" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 transition">
+                            360° (2π)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Tarjetas de métricas en vivo -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                        <span class="text-xs font-medium text-slate-500 block">Ángulo en Grados</span>
+                        <span id="lab-deg-display" class="text-2xl font-extrabold text-slate-900">57,30°</span>
+                        <span id="lab-dms-display" class="text-xs text-slate-500 block mt-0.5">57° 17' 45''</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-brand-50 border border-blue-200">
+                        <span class="text-xs font-medium text-brand-700 block">Ángulo en Radianes (\(\theta = s/r\))</span>
+                        <span id="lab-rad-display" class="text-2xl font-extrabold text-brand-700">1,000 rad</span>
+                        <span id="lab-pi-display" class="text-xs text-brand-600 font-semibold block mt-0.5">≈ 0,32 π rad</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-emerald-50 border border-emerald-200">
+                        <span class="text-xs font-medium text-emerald-800 block">Longitud del Arco (\(s = \theta \cdot r\))</span>
+                        <span id="lab-arc-display" class="text-2xl font-extrabold text-emerald-700">4,00 cm</span>
+                        <span id="lab-radii-count" class="text-xs text-emerald-600 block mt-0.5">Equivale a 1,00 radios</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                        <span class="text-xs font-medium text-amber-900 block">Área del Sector (\(A = \frac{1}{2}\theta r^2\))</span>
+                        <span id="lab-area-display" class="text-2xl font-extrabold text-amber-800">8,00 cm²</span>
+                        <span id="lab-radius-sub" class="text-xs text-amber-700 block mt-0.5">Para radio r = 4,0 cm</span>
+                    </div>
+                </div>
+
+                <!-- Lienzo + Controles -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    <div class="lg:col-span-7 flex flex-col items-center justify-center bg-slate-50 rounded-2xl border border-slate-200 p-4">
+                        <canvas id="radianCanvas" width="520" height="420" class="w-full max-w-[520px] h-auto cursor-pointer"></canvas>
+                        <span class="text-xs text-slate-400 mt-2">
+                            💡 Puedes arrastrar directamente el punto sobre la circunferencia o usar los deslizadores.
+                        </span>
+                    </div>
+
+                    <div class="lg:col-span-5 space-y-6">
+                        <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-5">
+                            <div>
+                                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                                    <label for="lab-angle-slider">1. Abertura del ángulo (\(\theta\)):</label>
+                                    <span id="lab-angle-slider-val" class="text-brand-700 font-mono">57,3°</span>
+                                </div>
+                                <input id="lab-angle-slider" type="range" min="0" max="360" step="0.1" value="57.2958" oninput="updateLabFromSliders()" class="w-full accent-brand-700 cursor-pointer h-2 rounded-lg">
+                                <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+                                    <span>0° (0 rad)</span>
+                                    <span>180° (π rad)</span>
+                                    <span>360° (2π rad)</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-200">
+                                <div class="flex justify-between text-sm font-semibold text-slate-700 mb-2">
+                                    <label for="lab-radius-slider">2. Tamaño del radio (\(r\)):</label>
+                                    <span id="lab-radius-slider-val" class="text-emerald-700 font-mono">4,0 cm</span>
+                                </div>
+                                <input id="lab-radius-slider" type="range" min="1.5" max="8.0" step="0.1" value="4.0" oninput="updateLabFromSliders()" class="w-full accent-emerald-600 cursor-pointer h-2 rounded-lg">
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    <strong>Prueba de invarianza:</strong> Mueve el deslizador del radio \(r\). Verás que el círculo crece o se encoge y el arco \(s\) cambia en centímetros, ¡pero <strong>el ángulo en radianes no cambia</strong> porque la proporción \(s/r\) se mantiene constante!
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Leyenda explicativa del Canvas -->
+                        <div class="p-4 rounded-xl bg-blue-50/60 border border-blue-200 text-xs text-slate-700 space-y-2">
+                            <div class="font-bold text-slate-900">¿Qué significan las marcas sobre el arco verde?</div>
+                            <p>
+                                Cada punto blanco numerado (\(1r, 2r, 3r\dots\)) sobre el arco verde indica dónde termina un cordel de longitud igual al radio. Observa que al llegar a \(180^\circ\) caben \(3\) radios enteros y sobra un pequeño tramo de \(0{,}1416\text{ radios}\) (\(\pi \approx 3{,}1416\)).
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- SECCIÓN 3: CONVERSIÓN Y CÍRCULO GONIOMÉTRICO                    -->
+        <!-- =============================================================== -->
+        <section id="sec-conversion" class="tab-content hidden space-y-8">
+            
+            <!-- Conversor Interactivo Paso a Paso -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Método Algebraico</span>
+                        <h3 class="text-xl font-bold text-slate-900">Calculadora de Factores de Conversión</h3>
+                        <p class="text-xs text-slate-500 mt-1">
+                            Introduce cualquier ángulo en grados para simplificar automáticamente su fracción exacta de \(\pi\text{ rad}\) usando el máximo común divisor.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-700 mb-1">Introduce un ángulo en grados (\(^\circ\)):</label>
+                            <div class="flex gap-2">
+                                <input type="number" id="conv-deg-input" value="135" step="1" oninput="runStepByStepConversion()" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 font-mono text-base focus:outline-none focus:ring-2 focus:ring-brand-600">
+                                <button onclick="document.getElementById('conv-deg-input').value=150; runStepByStepConversion();" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-xl text-slate-700">150°</button>
+                                <button onclick="document.getElementById('conv-deg-input').value=225; runStepByStepConversion();" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-xl text-slate-700">225°</button>
+                                <button onclick="document.getElementById('conv-deg-input').value=300; runStepByStepConversion();" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-xs font-semibold rounded-xl text-slate-700">300°</button>
+                            </div>
+                        </div>
+
+                        <div id="conv-steps-box" class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 text-sm">
+                            <!-- Rellenado dinámicamente con JS -->
+                        </div>
+                    </div>
+
+                    <!-- Alerta Calculadora DEG vs RAD -->
+                    <div class="rounded-xl border-2 border-accent-red bg-red-50/70 p-4 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-xs uppercase tracking-wider text-accent-red">⚠️ Alerta de Examen: Modo DEG vs RAD</span>
+                        </div>
+                        <p class="text-xs text-red-950 leading-relaxed">
+                            Comprueba qué devuelve una calculadora científica cuando tecleas \(\sin(\text{ángulo})\) según la letra activa en la pantalla superior:
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-red-900">Probar con \(\sin(\)</span>
+                            <input type="number" id="calc-test-input" value="30" oninput="updateCalcAlert()" class="w-20 px-2 py-1 text-center font-mono text-xs bg-white border border-red-300 rounded-md">
+                            <span class="text-xs font-semibold text-red-900">\()\):</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-white p-2.5 rounded-lg border border-emerald-300">
+                                <span class="font-bold text-emerald-800 block">Modo [D] (DEG)</span>
+                                <span id="calc-deg-out" class="font-mono text-sm font-bold text-slate-900">sin(30°) = 0,5000</span>
+                            </div>
+                            <div class="bg-white p-2.5 rounded-lg border border-red-300">
+                                <span class="font-bold text-red-800 block">Modo [R] (RAD)</span>
+                                <span id="calc-rad-out" class="font-mono text-sm font-bold text-red-700">sin(30 rad) = -0,9880</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Círculo Goniométrico Interactivo y Porciones de Pi -->
+                <div class="lg:col-span-7 bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Método Visual • Los 16 Ángulos Notables</span>
+                            <h3 class="text-xl font-bold text-slate-900">Círculo Goniométrico Interactivo</h3>
+                        </div>
+                        <span class="text-xs text-slate-500">Haz clic en cualquier punto del círculo para inspeccionarlo</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                        <div class="md:col-span-7 flex justify-center">
+                            <svg id="unit-circle-svg" viewBox="-220 -220 440 440" class="w-full max-w-[340px] h-auto select-none">
+                                <!-- Se genera dinámicamente al cargar para máxima nitidez -->
+                            </svg>
+                        </div>
+
+                        <div class="md:col-span-5 space-y-4">
+                            <div id="gonio-info-card" class="p-4 rounded-xl bg-brand-50 border border-blue-200 space-y-2.5">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs font-bold uppercase text-brand-700">Ángulo Seleccionado</span>
+                                    <span id="gonio-quad" class="text-[11px] font-semibold px-2 py-0.5 rounded bg-blue-200/70 text-brand-800">I Cuadrante</span>
+                                </div>
+                                <div class="flex items-baseline gap-3">
+                                    <span id="gonio-deg" class="text-3xl font-extrabold text-slate-900">60°</span>
+                                    <span id="gonio-rad" class="text-2xl font-bold text-brand-700">π/3 rad</span>
+                                </div>
+                                <p id="gonio-mental" class="text-xs text-slate-700 leading-relaxed bg-white p-2.5 rounded-lg border border-blue-100">
+                                    <strong>Lectura mental:</strong> La tercera parte de media vuelta (180° / 3).
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 text-xs font-mono pt-1">
+                                    <div class="bg-white p-2 rounded border border-slate-200">
+                                        <span class="text-slate-400 block text-[10px]">cos(θ)</span>
+                                        <span id="gonio-cos" class="font-bold text-slate-800">0,500</span>
+                                    </div>
+                                    <div class="bg-white p-2 rounded border border-slate-200">
+                                        <span class="text-slate-400 block text-[10px]">sin(θ)</span>
+                                        <span id="gonio-sin" class="font-bold text-slate-800">0,866</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tabla resumen de porciones de pi -->
+                            <div class="border border-slate-200 rounded-xl overflow-hidden text-xs">
+                                <div class="bg-slate-100 px-3 py-2 font-bold text-slate-700">
+                                    Bloques básicos («Porciones de \(\pi\)»)
+                                </div>
+                                <table class="w-full text-left border-collapse">
+                                    <tbody class="divide-y divide-slate-200">
+                                        <tr class="hover:bg-slate-50 cursor-pointer" onclick="selectNotableAngle(180)">
+                                            <td class="px-3 py-1.5 font-bold">180°</td>
+                                            <td class="px-3 py-1.5 text-brand-700 font-bold">\(\pi\text{ rad}\)</td>
+                                            <td class="px-3 py-1.5 text-slate-500">Media vuelta</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 cursor-pointer" onclick="selectNotableAngle(90)">
+                                            <td class="px-3 py-1.5 font-bold">90°</td>
+                                            <td class="px-3 py-1.5 text-brand-700 font-bold">\(\pi/2\text{ rad}\)</td>
+                                            <td class="px-3 py-1.5 text-slate-500">Mitad de \(180^\circ\)</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 cursor-pointer" onclick="selectNotableAngle(60)">
+                                            <td class="px-3 py-1.5 font-bold">60°</td>
+                                            <td class="px-3 py-1.5 text-brand-700 font-bold">\(\pi/3\text{ rad}\)</td>
+                                            <td class="px-3 py-1.5 text-slate-500">Tercio de \(180^\circ\)</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 cursor-pointer" onclick="selectNotableAngle(45)">
+                                            <td class="px-3 py-1.5 font-bold">45°</td>
+                                            <td class="px-3 py-1.5 text-brand-700 font-bold">\(\pi/4\text{ rad}\)</td>
+                                            <td class="px-3 py-1.5 text-slate-500">Cuarto de \(180^\circ\)</td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-50 cursor-pointer" onclick="selectNotableAngle(30)">
+                                            <td class="px-3 py-1.5 font-bold">30°</td>
+                                            <td class="px-3 py-1.5 text-brand-700 font-bold">\(\pi/6\text{ rad}\)</td>
+                                            <td class="px-3 py-1.5 text-slate-500">Sexto de \(180^\circ\)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- SECCIÓN 4: HOJA DE 8 EJERCICIOS GRADUADOS CON SOLUCIONARIO      -->
+        <!-- =============================================================== -->
+        <section id="sec-ejercicios" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Práctica Graduada • 1.º de Bachillerato</span>
+                    <h2 class="text-2xl font-bold text-slate-900">Hoja de 8 Ejercicios con Solucionario Detallado</h2>
+                    <p class="text-sm text-slate-600">
+                        Intenta resolver cada problema en tu cuaderno antes de desplegar la solución paso a paso.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button onclick="filterExercises('all')" id="filter-all" class="ex-filter-btn px-3 py-1.5 rounded-lg text-xs font-bold bg-brand-700 text-white">Todos (8)</button>
+                    <button onclick="filterExercises('nivel1')" id="filter-nivel1" class="ex-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Nivel 1: Conversión</button>
+                    <button onclick="filterExercises('nivel2')" id="filter-nivel2" class="ex-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Nivel 2: Arcos y Áreas</button>
+                    <button onclick="filterExercises('nivel3')" id="filter-nivel3" class="ex-filter-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200">Nivel 3: Física y Contexto</button>
+                    <button onclick="toggleAllSolutions()" class="px-3 py-1.5 rounded-lg text-xs font-semibold border border-brand-600 text-brand-700 hover:bg-brand-50">Mostrar/Ocultar Todas</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-5" id="exercises-list">
+                <!-- Ejercicio 1 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel1">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-brand-800">Ejercicio 1 • Nivel 1: Agilidad Mental</span>
+                            <span class="text-xs text-slate-400">Sin calculadora</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">1. Cálculo mental con porciones de \(\pi\)</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Expresa en radianes (como fracción irreducible de \(\pi\)) los siguientes ángulos descomponiéndolos mentalmente en múltiplos de \(30^\circ, 45^\circ, 60^\circ\) o \(90^\circ\):
+                        </p>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-sm font-medium text-slate-800">
+                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">a) \(120^\circ\)</div>
+                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">b) \(225^\circ\)</div>
+                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">c) \(300^\circ\)</div>
+                            <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">d) \(330^\circ\)</div>
+                        </div>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(1)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-1">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-1" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900 mb-2">Solución paso a paso:</div>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li><strong>a)</strong> \(120^\circ = 2 \times 60^\circ = 2 \cdot \dfrac{\pi}{3} = \mathbf{\dfrac{2\pi}{3}\text{ rad}}\).</li>
+                            <li><strong>b)</strong> \(225^\circ = 180^\circ + 45^\circ = \pi + \dfrac{\pi}{4} = \mathbf{\dfrac{5\pi}{4}\text{ rad}}\) (o bien \(5 \times 45^\circ = 5 \cdot \frac{\pi}{4}\)).</li>
+                            <li><strong>c)</strong> \(300^\circ = 5 \times 60^\circ = 5 \cdot \dfrac{\pi}{3} = \mathbf{\dfrac{5\pi}{3}\text{ rad}}\).</li>
+                            <li><strong>d)</strong> \(330^\circ = 360^\circ - 30^\circ = 2\pi - \dfrac{\pi}{6} = \mathbf{\dfrac{11\pi}{6}\text{ rad}}\) (o bien \(11 \times 30^\circ = 11 \cdot \frac{\pi}{6}\)).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 2 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel1">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-brand-800">Ejercicio 2 • Nivel 1: Conversión Algebraica</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">2. Conversión algebraica general</h3>
+                        <ul class="text-sm text-slate-700 space-y-1.5 list-none">
+                            <li><strong>a)</strong> Pasa a radianes (en forma de fracción de \(\pi\) y en valor decimal redondeado a las centésimas): \(72^\circ\), \(105^\circ\) y \(252^\circ\).</li>
+                            <li><strong>b)</strong> Pasa a grados sexagesimales (expresando en grados, minutos y segundos si no es exacto): \(\dfrac{7\pi}{12}\text{ rad}\), \(\dfrac{11\pi}{9}\text{ rad}\) y \(2{,}5\text{ rad}\).</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(2)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-2">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-2" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-3">
+                        <div class="font-bold text-emerald-900">Solución paso a paso:</div>
+                        <p><strong>a) Multiplicamos por \(\dfrac{\pi\text{ rad}}{180^\circ}\) y simplificamos:</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>\(72^\circ = \dfrac{72\pi}{180} = \mathbf{\dfrac{2\pi}{5}\text{ rad}} \approx \mathbf{1{,}26\text{ rad}}\) (dividiendo entre \(36\)).</li>
+                            <li>\(105^\circ = \dfrac{105\pi}{180} = \mathbf{\dfrac{7\pi}{12}\text{ rad}} \approx \mathbf{1{,}83\text{ rad}}\) (dividiendo entre \(15\)).</li>
+                            <li>\(252^\circ = \dfrac{252\pi}{180} = \mathbf{\dfrac{7\pi}{5}\text{ rad}} \approx \mathbf{4{,}40\text{ rad}}\) (dividiendo entre \(36\)).</li>
+                        </ul>
+                        <p><strong>b) Sustituimos \(\pi\text{ rad} = 180^\circ\) o multiplicamos por \(\dfrac{180^\circ}{\pi\text{ rad}}\):</strong></p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>\(\dfrac{7\pi}{12}\text{ rad} = \dfrac{7 \cdot 180^\circ}{12} = 7 \cdot 15^\circ = \mathbf{105^\circ}\).</li>
+                            <li>\(\dfrac{11\pi}{9}\text{ rad} = \dfrac{11 \cdot 180^\circ}{9} = 11 \cdot 20^\circ = \mathbf{220^\circ}\).</li>
+                            <li>\(2{,}5\text{ rad} = 2{,}5 \cdot \dfrac{180^\circ}{\pi} = \dfrac{450^\circ}{\pi} \approx 143{,}2394^\circ = \mathbf{143^\circ\, 14'\, 22''}\).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 3 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel1">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-blue-100 text-brand-800">Ejercicio 3 • Nivel 1: Razonamiento Geométrico</span>
+                            <span class="text-xs text-slate-400">Sin calculadora</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">3. Sentido geométrico del radián (Ordenación)</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Ordena de menor a mayor los siguientes ángulos sin usar la calculadora, razonando en qué cuadrante se encuentra cada uno:
+                        </p>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center text-sm">
+                            $$\alpha = 1\text{ rad}, \qquad \beta = 60^\circ, \qquad \gamma = \pi\text{ rad}, \qquad \delta = 3\text{ rad}, \qquad \varepsilon = \frac{\pi}{2}\text{ rad}, \qquad \zeta = 1{,}5\text{ rad}$$
+                        </div>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(3)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-3">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-3" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900">Solución razonada:</div>
+                        <p>Expresamos todos en radianes recordando que \(\pi \approx 3{,}1416\):</p>
+                        <ul class="list-disc pl-5 space-y-1">
+                            <li>\(\alpha = 1\text{ rad}\) (sabemos que es algo menor que \(60^\circ\), concretamente \(\approx 57{,}3^\circ\), I cuadrante).</li>
+                            <li>\(\beta = 60^\circ = \dfrac{\pi}{3}\text{ rad} \approx \dfrac{3{,}14}{3} \approx 1{,}047\text{ rad}\) (I cuadrante).</li>
+                            <li>\(\zeta = 1{,}5\text{ rad}\) (casi al final del I cuadrante, pues \(\frac{\pi}{2} \approx 1{,}57\text{ rad}\)).</li>
+                            <li>\(\varepsilon = \dfrac{\pi}{2}\text{ rad} \approx 1{,}57\text{ rad}\) (\(90^\circ\), límite entre I y II cuadrante).</li>
+                            <li>\(\delta = 3\text{ rad}\) (II cuadrante, muy cerca de media vuelta pero menor que \(\pi \approx 3{,}14\)).</li>
+                            <li>\(\gamma = \pi\text{ rad} \approx 3{,}1416\text{ rad}\) (\(180^\circ\), media vuelta exacta).</li>
+                        </ul>
+                        <p class="pt-2 font-bold text-emerald-950">
+                            Orden creciente: \(\alpha (1\text{ rad}) < \beta (60^\circ) < \zeta (1{,}5\text{ rad}) < \varepsilon (\frac{\pi}{2}\text{ rad}) < \delta (3\text{ rad}) < \gamma (\pi\text{ rad})\).
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 4 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel2">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Ejercicio 4 • Nivel 2: Arco y Sector</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">4. El péndulo del reloj</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            El péndulo de un reloj de pared mide \(60\text{ cm}\) de longitud. En su balanceo de extremo a extremo describe un ángulo de \(24^\circ\).
+                        </p>
+                        <ul class="text-sm text-slate-700 space-y-1">
+                            <li><strong>a)</strong> ¿Cuál es la longitud exacta (en función de \(\pi\)) y aproximada del arco que recorre la lenteja del péndulo en una oscilación simple?</li>
+                            <li><strong>b)</strong> ¿Qué área barre la varilla del péndulo en ese mismo movimiento?</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(4)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-4">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-4" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900">Solución paso a paso:</div>
+                        <p>Primero pasamos el ángulo a radianes: \(\theta = 24^\circ \cdot \dfrac{\pi\text{ rad}}{180^\circ} = \dfrac{2\pi}{15}\text{ rad}\).</p>
+                        <ul class="list-disc pl-5 space-y-1.5">
+                            <li><strong>a) Longitud del arco:</strong> \(s = \theta \cdot r = \dfrac{2\pi}{15} \cdot 60 = 2\pi \cdot 4 = \mathbf{8\pi\text{ cm} \approx 25{,}13\text{ cm}}\).</li>
+                            <li><strong>b) Área barrida:</strong> \(A = \dfrac{1}{2}\theta r^2 = \dfrac{1}{2} \cdot \dfrac{2\pi}{15} \cdot 60^2 = \dfrac{\pi}{15} \cdot 3600 = \mathbf{240\pi\text{ cm}^2 \approx 753{,}98\text{ cm}^2}\).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 5 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel2">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">Ejercicio 5 • Nivel 2: Corona y Trapecio Circular</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">5. Diseño de un limpiaparabrisas</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            La escobilla de un limpiaparabrisas mide \(45\text{ cm}\) de largo y está montada sobre un brazo metálico cuyo punto de giro está a \(15\text{ cm}\) del extremo inferior de la escobilla (por tanto, el extremo superior queda a \(60\text{ cm}\) del eje de giro). Si el mecanismo barre un ángulo de \(\dfrac{2\pi}{3}\text{ rad}\), calcula el área total de cristal que queda limpia en cada barrido.
+                        </p>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(5)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-5">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-5" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900">Solución paso a paso:</div>
+                        <p>
+                            La zona barrida es un trapecio circular: la resta entre el sector circular grande de radio \(R = 60\text{ cm}\) y el sector pequeño sin escobilla de radio \(r = 15\text{ cm}\) para un ángulo \(\theta = \dfrac{2\pi}{3}\text{ rad}\):
+                        </p>
+                        <div>
+                            $$A_{\text{limpia}} = \frac{1}{2}\theta R^2 - \frac{1}{2}\theta r^2 = \frac{1}{2}\theta (R^2 - r^2) = \frac{1}{2} \cdot \frac{2\pi}{3} \cdot (60^2 - 15^2) = \frac{\pi}{3} \cdot 3375 = \mathbf{1125\pi\text{ cm}^2 \approx 3534{,}29\text{ cm}^2}$$
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 6 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel3">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900">Ejercicio 6 • Nivel 3: Geodesia y Navegación</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">6. Meridiano terrestre y definición de milla náutica</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Asumiendo que la Tierra es una esfera de radio medio \(R \approx 6371\text{ km}\):
+                        </p>
+                        <ul class="text-sm text-slate-700 space-y-1">
+                            <li><strong>a)</strong> Dos ciudades situadas sobre el mismo meridiano tienen latitudes de \(43^\circ\, 15'\text{ N}\) y \(37^\circ\, 45'\text{ N}\). ¿Qué distancia sobre la superficie terrestre las separa?</li>
+                            <li><strong>b)</strong> Una <em>milla náutica</em> (\(\text{nmi}\)) se define como la longitud de un arco de meridiano terrestre correspondiente a un ángulo central de \(1\) minuto de arco (\(1' = \frac{1^\circ}{60}\)). Calcula a cuántos metros equivale una milla náutica.</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(6)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-6">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-6" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900">Solución paso a paso:</div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>
+                                <strong>a)</strong> Diferencia de latitud: \(\Delta\phi = 43^\circ\, 15' - 37^\circ\, 45' = 5^\circ\, 30' = 5{,}5^\circ\). En radianes: \(\theta = 5{,}5^\circ \cdot \dfrac{\pi}{180^\circ} = \dfrac{11\pi}{360}\text{ rad}\). Distancia:
+                                $$s = \theta \cdot R = \frac{11\pi}{360} \cdot 6371 \approx \mathbf{611{,}57\text{ km}}$$
+                            </li>
+                            <li>
+                                <strong>b)</strong> Un minuto de arco en radianes es \(\theta = \dfrac{1}{60} \cdot \dfrac{\pi}{180} = \dfrac{\pi}{10800}\text{ rad}\). Con \(R = 6\,371\,000\text{ m}\):
+                                $$1\text{ nmi} = s = \frac{\pi}{10800} \cdot 6371000 \approx \mathbf{1853{,}25\text{ m}} \quad (\text{convenio internacional: } 1852\text{ m})$$
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 7 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel3">
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900">Ejercicio 7 • Nivel 3: Cinemática Circular</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">7. Velocidad angular (\(\omega\)) y velocidad lineal (\(v\)) en ciclismo</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            Dividiendo \(s = \theta \cdot r\) entre el tiempo \(t\), obtenemos la relación entre velocidad lineal (\(v = s/t\)) y velocidad angular (\(\omega = \theta/t\), en \(\text{rad/s}\)): \(\mathbf{v = \omega \cdot r}\). Un ciclista lleva ruedas de radio exterior \(r = 340\text{ mm}\) que giran a \(180\text{ rpm}\) (revoluciones por minuto):
+                        </p>
+                        <ul class="text-sm text-slate-700 space-y-1">
+                            <li><strong>a)</strong> Expresa la velocidad angular \(\omega\) de la rueda en \(\text{rad/s}\).</li>
+                            <li><strong>b)</strong> Calcula la velocidad lineal del ciclista en \(\text{m/s}\) y en \(\text{km/h}\).</li>
+                        </ul>
+                        <div class="pt-2">
+                            <button onclick="toggleSolution(7)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-7">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-7" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900">Solución paso a paso:</div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>
+                                <strong>a)</strong> Cada vuelta son \(2\pi\text{ rad}\) y un minuto son \(60\text{ s}\):
+                                $$\omega = 180 \cdot \frac{2\pi\text{ rad}}{60\text{ s}} = \mathbf{6\pi\text{ rad/s} \approx 18{,}85\text{ rad/s}}$$
+                            </li>
+                            <li>
+                                <strong>b)</strong> Con \(r = 0{,}34\text{ m}\), aplicamos \(v = \omega \cdot r\):
+                                $$v = 6\pi\text{ rad/s} \cdot 0{,}34\text{ m} \approx \mathbf{6{,}41\text{ m/s}} \xrightarrow{\times 3{,}6} \mathbf{23{,}07\text{ km/h}}$$
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ejercicio 8 -->
+                <div class="exercise-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden" data-level="nivel3">
+                    <div class="p-6 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900">Ejercicio 8 • Nivel 3: Transmisión Mecánica</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-slate-900">8. Transmisión entre plato y piñón</h3>
+                        <p class="text-sm text-slate-700 leading-relaxed">
+                            En una bicicleta, el plato delantero tiene un radio \(R_p = 8{,}4\text{ cm}\) (\(40\) dientes) y está unido mediante la cadena a un piñón trasero de radio \(R_c = 4{,}2\text{ cm}\) (\(20\) dientes). Como la cadena es inextensible, el arco de cadena desplazado en ambos engranajes es idéntico (\(s_p = s_c\)).
+                        </p>
+
+                        <!-- Diagrama SVG del plato y piñón (equivalente al TikZ) -->
+                        <div class="bg-slate-50 rounded-xl p-4 border border-slate-200 flex justify-center">
+                            <svg viewBox="0 0 460 150" class="w-full max-w-md h-auto">
+                                <!-- Cadenas tangentes -->
+                                <line x1="80" y1="45" x2="340" y2="25" stroke="#64748b" stroke-width="2.5" stroke-dasharray="6,4"/>
+                                <line x1="80" y1="105" x2="340" y2="125" stroke="#64748b" stroke-width="2.5" stroke-dasharray="6,4"/>
+                                <text x="210" y="25" fill="#475569" font-size="11" text-anchor="middle" font-weight="bold">Cadena (s_piñón = s_plato)</text>
+                                <!-- Piñón trasero -->
+                                <circle cx="80" cy="75" r="30" fill="#dbeafe" stroke="#144178" stroke-width="2.5"/>
+                                <circle cx="80" cy="75" r="3" fill="#0f172a"/>
+                                <line x1="80" y1="75" x2="98" y2="51" stroke="#144178" stroke-width="2"/>
+                                <text x="95" y="70" fill="#144178" font-size="11" font-weight="bold">R_c</text>
+                                <text x="80" y="128" fill="#0f172a" font-size="11" text-anchor="middle" font-weight="bold">Piñón (4,2 cm)</text>
+                                <text x="32" y="78" fill="#be2828" font-size="12" font-weight="bold">θ_c</text>
+                                <!-- Plato delantero -->
+                                <circle cx="340" cy="75" r="50" fill="#dbeafe" stroke="#144178" stroke-width="2.5"/>
+                                <circle cx="340" cy="75" r="3.5" fill="#0f172a"/>
+                                <line x1="340" y1="75" x2="375" y2="40" stroke="#144178" stroke-width="2"/>
+                                <text x="360" y="72" fill="#144178" font-size="11" font-weight="bold">R_p</text>
+                                <text x="340" y="142" fill="#0f172a" font-size="11" text-anchor="middle" font-weight="bold">Plato (8,4 cm)</text>
+                                <text x="405" y="78" fill="#19824b" font-size="12" font-weight="bold">θ_p</text>
+                            </svg>
+                        </div>
+
+                        <ul class="text-sm text-slate-700 space-y-1">
+                            <li><strong>a)</strong> Si el ciclista gira los pedales un ángulo \(\theta_p = \dfrac{3\pi}{2}\text{ rad}\), ¿cuántos centímetros de cadena se han desplazado?</li>
+                            <li><strong>b)</strong> ¿Qué ángulo \(\theta_c\) (en radianes y en grados) habrá girado el piñón trasero en ese mismo instante?</li>
+                        </ul>
+                        <div class="pt-1">
+                            <button onclick="toggleSolution(8)" class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-lg transition">
+                                <span id="sol-btn-text-8">Ver solución detallada</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="sol-box-8" class="solution-box hidden bg-emerald-50/50 border-t border-emerald-200 p-6 text-sm text-slate-800 space-y-2">
+                        <div class="font-bold text-emerald-900">Solución paso a paso:</div>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li>
+                                <strong>a)</strong> Longitud de cadena desplazada por el plato:
+                                $$s_p = \theta_p \cdot R_p = \frac{3\pi}{2}\text{ rad} \cdot 8{,}4\text{ cm} = 12{,}6\pi\text{ cm} \approx \mathbf{39{,}58\text{ cm}}$$
+                            </li>
+                            <li>
+                                <strong>b)</strong> Como \(s_c = s_p = 12{,}6\pi\text{ cm}\), despejamos el ángulo del piñón:
+                                $$\theta_c = \frac{s_c}{R_c} = \frac{12{,}6\pi\text{ cm}}{4{,}2\text{ cm}} = \mathbf{3\pi\text{ rad}} = 3 \cdot 180^\circ = \mathbf{540^\circ} \quad (\text{una vuelta y media})$$
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- SECCIÓN 5: REPOSITORIO LATEX + TIKZ Y GUION DOCENTE             -->
+        <!-- =============================================================== -->
+        <section id="sec-latex" class="tab-content hidden space-y-8">
+            <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Material Listo para Compilar (pdflatex)</span>
+                        <h2 class="text-2xl font-bold text-slate-900">Documento \(\text{\LaTeX}\) Completo + Gráficos TikZ + Ejercicios</h2>
+                        <p class="text-sm text-slate-600">
+                            Incluye la teoría, las cajas didácticas <code>tcolorbox</code>, los diagramas vectoriales <code>TikZ</code> y los 8 ejercicios graduados con su solucionario unificados en un único archivo <code>.tex</code>.
+                        </p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="copyLatexCode()" id="copy-latex-btn" class="px-4 py-2.5 rounded-xl bg-brand-700 hover:bg-brand-800 text-white text-xs sm:text-sm font-bold shadow-sm transition flex items-center gap-2">
+                            <span>📋 Copiar código LaTeX</span>
+                        </button>
+                        <button onclick="downloadLatexFile()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs sm:text-sm font-bold shadow-sm transition flex items-center gap-2">
+                            <span>⬇️ Descargar .tex</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Notificación de copiado -->
+                <div id="copy-toast" class="hidden p-3 rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-900 text-xs font-semibold flex items-center justify-between">
+                    <span>✔️ ¡Código LaTeX copiado al portapapeles! Puedes pegarlo directamente en Overleaf o TeXstudio.</span>
+                </div>
+
+                <!-- Área de código LaTeX -->
+                <div class="relative">
+                    <textarea id="latex-source-area" readonly class="w-full h-[500px] p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs leading-relaxed border border-slate-700 focus:outline-none">
+\documentclass[11pt,a4paper]{article}
+
+% --- PAQUETES DE IDIOMA Y CODIFICACIÓN ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-tabla]{babel}
+
+% --- DISEÑO DE PÁGINA Y TIPOGRAFÍA ---
+\usepackage[margin=2.2cm, headheight=15pt]{geometry}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{parskip}
+\usepackage{enumitem}
+
+% --- MATEMÁTICAS ---
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{cancel}
+\usepackage{siunitx}
+\sisetup{output-decimal-marker = {,}}
+
+% --- GRÁFICOS Y COLORES (TikZ & tcolorbox) ---
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, calc, angles, quotes, decorations.markings, backgrounds}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{multicol}
+
+% --- PALETA DE COLORES ---
+\definecolor{azulPrincipal}{RGB}{20, 65, 120}
+\definecolor{azulClaro}{RGB}{235, 242, 250}
+\definecolor{rojoAcento}{RGB}{190, 40, 40}
+\definecolor{rojoClaro}{RGB}{252, 238, 238}
+\definecolor{verdeArco}{RGB}{25, 130, 75}
+\definecolor{grisTexto}{RGB}{80, 80, 80}
+
+% --- CABECERAS Y PIES DE PÁGINA ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\textcolor{grisTexto}{\small Matemáticas I -- 1.º de Bachillerato}}
+\rhead{\textcolor{grisTexto}{\small Unidad: Trigonometría}}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% --- CAJAS DIDÁCTICAS (tcolorbox) ---
+\newtcolorbox{concepto}[1]{
+    colback=azulClaro,
+    colframe=azulPrincipal,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=2mm,
+    boxrule=0.8pt,
+    left=3mm, right=3mm, top=2mm, bottom=2mm
+}
+
+\newtcolorbox{alerta}[1]{
+    colback=rojoClaro,
+    colframe=rojoAcento,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=2mm,
+    boxrule=0.8pt,
+    left=3mm, right=3mm, top=2mm, bottom=2mm
+}
+
+\newtcolorbox{ejemplo}[1]{
+    colback=white,
+    colframe=verdeArco,
+    fonttitle=\bfseries,
+    title=#1,
+    arc=1mm,
+    boxrule=0.8pt,
+    left=3mm, right=3mm, top=2mm, bottom=2mm
+}
+
+% --- TÍTULO PERSONALIZADO ---
+\newcommand{\tituloApuntes}{
+    \begin{center}
+        {\LARGE \bfseries \textcolor{azulPrincipal}{Medición de Ángulos: Del Grado al Radián}}\\[0.2cm]
+        {\large \textcolor{grisTexto}{Por qué la geometría prefiere medir giros usando el radio}}
+    \end{center}
+    \vspace{0.2cm}
+    \hrule height 1pt
+    \vspace{0.5cm}
+}
+
+\begin{document}
+
+\tituloApuntes
+
+\section{Introducción: El problema de hablar dos idiomas distintos}
+Imagina la siguiente situación práctica: la rueda de tu bicicleta tiene un radio de $r = \SI{35}{cm}$. Si mientras das una curva la rueda gira exactamente un ángulo de $45^\circ$, \textbf{¿cuántos centímetros de asfalto has recorrido?}
+\[
+s = 2\pi \cdot 35 \cdot \frac{45^\circ}{360^\circ} \approx \SI{27,49}{cm}
+\]
+¿Y si diseñáramos una unidad para medir ángulos que nos dijera \textit{directamente} cuántos radios hemos avanzado sobre el borde de la circunferencia? Esa unidad es el \textbf{radián}.
+
+\section{El Sistema Sexagesimal: ¿Por qué $360^\circ$ y no $100^\circ$?}
+El número $360$ es una herencia histórica de Babilonia motivada por la duración aproximada del año solar ($365$ días) y su sistema aritmético en base $60$. El número $360$ es altamente compuesto ($24$ divisores), lo que facilita partir círculos sin decimales, pero deforma la escala de las funciones trigonométricas como $f(x)=\sin(x)$.
+
+\section{El Concepto de Radián: Medir el giro con el propio radio}
+\begin{center}
+\begin{tikzpicture}[scale=1.15, every node/.style={font=\small}]
+    \def\R{2.6}
+    \def\angRad{57.2958}
+    \draw[gray!40, thick, dashed] (0,0) circle (\R);
+    \fill[azulClaro] (0,0) -- (\R,0) arc (0:\angRad:\R) -- cycle;
+    \draw[azulPrincipal, thick, ->, >=Stealth] (0.9,0) arc (0:\angRad:0.9);
+    \node[azulPrincipal, font=\bfseries] at (28.6:1.35) {$\theta = 1\text{ rad}$};
+    \draw[azulPrincipal, very thick] (0,0) -- (\R,0) node[midway, below, font=\bfseries] {Radio ($r$)};
+    \draw[azulPrincipal, very thick] (0,0) -- (\angRad:\R) node[midway, above left] {$r$};
+    \draw[verdeArco, line width=2.5pt] (\R,0) arc (0:\angRad:\R);
+    \node[verdeArco, font=\bfseries, right, align=left] at (28.6:\R+0.2) {Arco $s = r$};
+    \filldraw[black] (0,0) circle (1.5pt) node[below left] {$O$};
+    \filldraw[azulPrincipal] (\R,0) circle (1.8pt) node[below right] {$A$};
+    \filldraw[verdeArco] (\angRad:\R) circle (1.8pt) node[above] {$B$};
+\end{tikzpicture}
+\end{center}
+
+\begin{concepto}{Definición formal de radián}
+\[
+\theta \text{ (en radianes)} = \frac{s}{r} \quad \Longleftrightarrow \quad \mathbf{s = \theta \cdot r}
+\]
+En una vuelta completa ($L = 2\pi r$), caben $2\pi$ radios: $\mathbf{360^\circ = 2\pi\text{ rad} \iff 180^\circ = \pi\text{ rad}}$.
+\end{concepto}
+
+\section{Ejercicios Propuestos (Nivel Graduado)}
+\begin{enumerate}[label=\textbf{\arabic*.}, leftmargin=*, itemsep=6pt]
+    \item \textbf{Cálculo mental con porciones de $\pi$:} Expresa en radianes: a) $120^\circ$, b) $225^\circ$, c) $300^\circ$, d) $330^\circ$.
+    \item \textbf{Conversión algebraica:} a) Pasa a radianes: $72^\circ$, $105^\circ$ y $252^\circ$. b) Pasa a grados: $\frac{7\pi}{12}\text{ rad}$, $\frac{11\pi}{9}\text{ rad}$ y $\SI{2,5}{rad}$.
+    \item \textbf{Ordenación sin calculadora:} Ordena de menor a mayor: $\alpha = 1\text{ rad}, \beta = 60^\circ, \gamma = \pi\text{ rad}, \delta = 3\text{ rad}, \varepsilon = \frac{\pi}{2}\text{ rad}, \zeta = \SI{1,5}{rad}$.
+    \item \textbf{El péndulo del reloj:} Longitud $r = \SI{60}{cm}$ y ángulo $24^\circ$. Calcula el arco recorrido y el área barrida.
+    \item \textbf{Limpiaparabrisas:} Escobilla de $\SI{45}{cm}$ (desde $r=\SI{15}{cm}$ hasta $R=\SI{60}{cm}$) que barre $\frac{2\pi}{3}\text{ rad}$. Calcula el área limpia.
+    \item \textbf{Geodesia ($R = \SI{6371}{km}$):} a) Distancia entre latitudes $43^\circ 15'\text{ N}$ y $37^\circ 45'\text{ N}$. b) Valor en metros de $1\text{ milla náutica}$ ($1'$ de arco).
+    \item \textbf{Ciclismo ($v = \omega \cdot r$):} Rueda de $r = \SI{340}{mm}$ a $180\text{ rpm}$. Calcula $\omega$ en $\text{rad/s}$ y $v$ en $\text{km/h}$.
+    \item \textbf{Transmisión:} Plato $R_p = \SI{8,4}{cm}$ y piñón $R_c = \SI{4,2}{cm}$. Si el plato gira $\theta_p = \frac{3\pi}{2}\text{ rad}$, halla la cadena desplazada y el giro $\theta_c$ del piñón.
+\end{enumerate}
+
+\section{Solucionario Resumen}
+\textbf{1.} a) $\frac{2\pi}{3}$, b) $\frac{5\pi}{4}$, c) $\frac{5\pi}{3}$, d) $\frac{11\pi}{6}$. \quad
+\textbf{2.} a) $\frac{2\pi}{5}, \frac{7\pi}{12}, \frac{7\pi}{5}$. b) $105^\circ, 220^\circ, 143^\circ 14' 22''$. \quad
+\textbf{3.} $\alpha < \beta < \zeta < \varepsilon < \delta < \gamma$. \quad
+\textbf{4.} $s = 8\pi \approx \SI{25,13}{cm}$, $A = 240\pi \approx \SI{753,98}{cm^2}$. \quad
+\textbf{5.} $A = 1125\pi \approx \SI{3534,29}{cm^2}$. \quad
+\textbf{6.} a) $\SI{611,57}{km}$, b) $\SI{1853,25}{m}$. \quad
+\textbf{7.} $\omega = 6\pi\text{ rad/s}$, $v \approx \SI{23,07}{km/h}$. \quad
+\textbf{8.} $s = \SI{39,58}{cm}$, $\theta_c = 3\pi\text{ rad} = 540^\circ$.
+
+\end{document}
+                    </textarea>
+                </div>
+
+                <!-- Resumen del Guion Didáctico para el Profesor -->
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-200 space-y-3">
+                    <h3 class="font-bold text-slate-900 text-base">📋 Resumen de la Secuencia Didáctica para el Profesor</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs text-slate-600">
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+                            <strong class="text-brand-700 block mb-1">1. Conflicto Cognitivo (10 min)</strong>
+                            Plantear el reto de la rueda de bicicleta (\(r=35\text{ cm}, 45^\circ\)) para evidenciar que los grados no conectan directamente con longitudes.
+                        </div>
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+                            <strong class="text-brand-700 block mb-1">2. Construcción del Radián (15 min)</strong>
+                            Experimento mental del cordel de longitud \(r\) sobre el arco. Deducir \(180^\circ = \pi\text{ rad}\) y recalcar que \(\pi\) es un número, no una unidad.
+                        </div>
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+                            <strong class="text-brand-700 block mb-1">3. Agilidad con \(\pi\) (15 min)</strong>
+                            Trabajar la tabla de porciones de media vuelta (\(\frac{\pi}{2}, \frac{\pi}{3}, \frac{\pi}{4}, \frac{\pi}{6}\)) antes de usar factores de conversión mecánicos.
+                        </div>
+                        <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+                            <strong class="text-brand-700 block mb-1">4. Aplicaciones y Alerta (15 min)</strong>
+                            Resolver problemas de arcos, velocidades angulares y comprobar en las calculadoras del aula la diferencia entre modo <code>D</code> y modo <code>R</code>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de página -->
+    <footer class="bg-white border-t border-slate-200 py-5 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+            <span>Material Didáctico de Matemáticas I (1.º de Bachillerato) — Unidad de Trigonometría</span>
+            <span>Incluye Teoría, Simulador Canvas 2D, Círculo Goniométrico, 8 Problemas y Código \(\text{\LaTeX}\)</span>
+        </div>
+    </footer>
+
+    <script>
+        // --- 1. GESTIÓN DE PESTAÑAS ---
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('sec-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-700', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+            });
+            const activeBtn = document.getElementById('tab-btn-' + tabId);
+            activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+            activeBtn.classList.add('bg-brand-700', 'text-white', 'shadow-sm');
+
+            if (tabId === 'laboratorio') {
+                drawRadianLab();
+            }
+        }
+
+        // --- 2. DEMO RÁPIDA DE LA BICICLETA (HERO) ---
+        function gcd(a, b) {
+            a = Math.abs(Math.round(a));
+            b = Math.abs(Math.round(b));
+            while (b) {
+                let t = b;
+                b = a % b;
+                a = t;
+            }
+            return a || 1;
+        }
+
+        function formatPiFraction(deg) {
+            if (deg === 0) return '0 rad';
+            const d = gcd(deg, 180);
+            const num = Math.round(deg / d);
+            const den = Math.round(180 / d);
+            const numStr = num === 1 ? 'π' : num + 'π';
+            return den === 1 ? `${numStr} rad` : `${numStr}/${den} rad`;
+        }
+
+        function updateBikeDemo(degVal) {
+            const deg = parseFloat(degVal);
+            const rad = deg * Math.PI / 180;
+            const r = 35; // 35 cm
+            const arc = rad * r;
+
+            document.getElementById('bike-angle-label').textContent = `${deg}° (${formatPiFraction(deg)})`;
+            document.getElementById('bike-rad-val').textContent = rad.toFixed(3).replace('.', ',') + ' rad';
+            document.getElementById('bike-arc-val').textContent = arc.toFixed(2).replace('.', ',') + ' cm';
+        }
+
+        // --- 3. LABORATORIO INTERACTIVO EN CANVAS 2D ---
+        let labState = {
+            angleDeg: 57.2958,
+            radiusCm: 4.0,
+            isDragging: false
+        };
+
+        function toDMS(degFloat) {
+            const d = Math.floor(degFloat);
+            const minFloat = (degFloat - d) * 60;
+            const m = Math.floor(minFloat);
+            const s = Math.round((minFloat - m) * 60);
+            return `${d}° ${m}' ${s}''`;
+        }
+
+        function setLabAngle(deg) {
+            labState.angleDeg = deg;
+            document.getElementById('lab-angle-slider').value = deg;
+            updateLabUI();
+        }
+
+        function updateLabFromSliders() {
+            labState.angleDeg = parseFloat(document.getElementById('lab-angle-slider').value);
+            labState.radiusCm = parseFloat(document.getElementById('lab-radius-slider').value);
+            updateLabUI();
+        }
+
+        function updateLabUI() {
+            const deg = labState.angleDeg;
+            const r = labState.radiusCm;
+            const rad = deg * Math.PI / 180;
+            const arc = rad * r;
+            const area = 0.5 * rad * r * r;
+
+            document.getElementById('lab-angle-slider-val').textContent = deg.toFixed(1).replace('.', ',') + '°';
+            document.getElementById('lab-radius-slider-val').textContent = r.toFixed(1).replace('.', ',') + ' cm';
+
+            document.getElementById('lab-deg-display').textContent = deg.toFixed(2).replace('.', ',') + '°';
+            document.getElementById('lab-dms-display').textContent = toDMS(deg);
+            document.getElementById('lab-rad-display').textContent = rad.toFixed(3).replace('.', ',') + ' rad';
+            document.getElementById('lab-pi-display').textContent = `≈ ${(rad / Math.PI).toFixed(2).replace('.', ',')} π rad`;
+            document.getElementById('lab-arc-display').textContent = arc.toFixed(2).replace('.', ',') + ' cm';
+            document.getElementById('lab-radii-count').textContent = `Equivale a ${rad.toFixed(2).replace('.', ',')} radios`;
+            document.getElementById('lab-area-display').textContent = area.toFixed(2).replace('.', ',') + ' cm²';
+            document.getElementById('lab-radius-sub').textContent = `Para radio r = ${r.toFixed(1).replace('.', ',')} cm`;
+
+            drawRadianLab();
+        }
+
+        function drawRadianLab() {
+            const canvas = document.getElementById('radianCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const w = canvas.width;
+            const h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+
+            const cx = w / 2;
+            const cy = h / 2;
+            // Escalar el radio visual entre 65px y 165px según labState.radiusCm (1.5 a 8.0)
+            const R = 50 + (labState.radiusCm / 8.0) * 118;
+            const rad = labState.angleDeg * Math.PI / 180;
+
+            // Ejes suaves
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(20, cy); ctx.lineTo(w - 20, cy);
+            ctx.moveTo(cx, 20); ctx.lineTo(cx, h - 20);
+            ctx.stroke();
+
+            // Circunferencia base
+            ctx.strokeStyle = '#cbd5e1';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([6, 5]);
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Sector coloreado (sentido antihorario en pantalla: de 0 a -rad)
+            ctx.fillStyle = 'rgba(219, 234, 254, 0.65)';
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, R, 0, -rad, true);
+            ctx.closePath();
+            ctx.fill();
+
+            // Arco del ángulo interior
+            const innerR = Math.min(42, R * 0.42);
+            ctx.strokeStyle = '#144178';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(cx, cy, innerR, 0, -rad, true);
+            ctx.stroke();
+
+            // Radio base horizontal (0 grados)
+            ctx.strokeStyle = '#144178';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(cx + R, cy);
+            ctx.stroke();
+
+            // Radio móvil
+            const endX = cx + R * Math.cos(-rad);
+            const endY = cy + R * Math.sin(-rad);
+            ctx.strokeStyle = '#144178';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(cx, cy);
+            ctx.lineTo(endX, endY);
+            ctx.stroke();
+
+            // Arco recorrido exterior en verde (s = theta * r)
+            ctx.strokeStyle = '#19824b';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, -rad, true);
+            ctx.stroke();
+
+            // Marcas de cada radián entero sobre el arco (1r, 2r, 3r, 4r, 5r, 6r)
+            const wholeRadians = Math.floor(rad + 0.0001);
+            for (let k = 1; k <= wholeRadians && k <= 6; k++) {
+                const mx = cx + R * Math.cos(-k);
+                const my = cy + R * Math.sin(-k);
+                ctx.fillStyle = '#ffffff';
+                ctx.strokeStyle = '#19824b';
+                ctx.lineWidth = 2.5;
+                ctx.beginPath();
+                ctx.arc(mx, my, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                const lx = cx + (R + 20) * Math.cos(-k);
+                const ly = cy + (R + 20) * Math.sin(-k);
+                ctx.fillStyle = '#19824b';
+                ctx.font = 'bold 11px Inter';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${k}r`, lx, ly);
+            }
+
+            // Etiqueta del radio base
+            ctx.fillStyle = '#144178';
+            ctx.font = 'bold 12px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText(`r = ${labState.radiusCm.toFixed(1).replace('.', ',')} cm`, cx + R / 2, cy + 18);
+
+            // Centro y tirador interactivo
+            ctx.fillStyle = '#0f172a';
+            ctx.beginPath();
+            ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = '#19824b';
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.arc(endX, endY, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // Eventos de ratón/táctil para arrastrar el ángulo en el Canvas
+        function initCanvasInteractions() {
+            const canvas = document.getElementById('radianCanvas');
+            if (!canvas) return;
+
+            function handlePointer(clientX, clientY) {
+                const rect = canvas.getBoundingClientRect();
+                const scaleX = canvas.width / rect.width;
+                const scaleY = canvas.height / rect.height;
+                const x = (clientX - rect.left) * scaleX - canvas.width / 2;
+                const y = (clientY - rect.top) * scaleY - canvas.height / 2;
+                let angleRad = Math.atan2(-y, x);
+                if (angleRad < 0) angleRad += Math.PI * 2;
+                const deg = angleRad * 180 / Math.PI;
+                setLabAngle(deg);
+            }
+
+            canvas.addEventListener('mousedown', (e) => {
+                labState.isDragging = true;
+                handlePointer(e.clientX, e.clientY);
+            });
+            window.addEventListener('mousemove', (e) => {
+                if (labState.isDragging) handlePointer(e.clientX, e.clientY);
+            });
+            window.addEventListener('mouseup', () => {
+                labState.isDragging = false;
+            });
+
+            canvas.addEventListener('touchstart', (e) => {
+                labState.isDragging = true;
+                handlePointer(e.touches[0].clientX, e.touches[0].clientY);
+                e.preventDefault();
+            }, { passive: false });
+            canvas.addEventListener('touchmove', (e) => {
+                if (labState.isDragging) {
+                    handlePointer(e.touches[0].clientX, e.touches[0].clientY);
+                    e.preventDefault();
+                }
+            }, { passive: false });
+            canvas.addEventListener('touchend', () => {
+                labState.isDragging = false;
+            });
+        }
+
+        // --- 4. CONVERSOR PASO A PASO Y CÍRCULO GONIOMÉTRICO ---
+        function runStepByStepConversion() {
+            const val = parseFloat(document.getElementById('conv-deg-input').value);
+            const box = document.getElementById('conv-steps-box');
+            if (isNaN(val)) {
+                box.innerHTML = '<p class="text-slate-500">Introduce un valor numérico válido.</p>';
+                return;
+            }
+            const radDec = (val * Math.PI / 180).toFixed(4).replace('.', ',');
+            if (Number.isInteger(val)) {
+                const divisor = gcd(val, 180);
+                const num = val / divisor;
+                const den = 180 / divisor;
+                const fracStr = den === 1 ? `${num === 1 ? '' : num}\\pi` : `\\dfrac{${num === 1 ? '' : (num === -1 ? '-' : num)}\\pi}{${den}}`;
+                box.innerHTML = `
+                    <div class="text-xs font-bold uppercase text-brand-700">Resolución simplificando por MCD(${Math.abs(val)}, 180) = ${divisor}:</div>
+                    <div class="text-slate-800 font-mono text-sm py-1">
+                        ${val}° · (π rad / 180°) = ${val}π / 180 = <strong class="text-brand-700 text-base">${num === 1 ? '' : num}π${den === 1 ? '' : '/' + den} rad</strong>
+                    </div>
+                    <div class="text-xs text-slate-600">
+                        Valor decimal aproximado: <strong>≈ ${radDec} rad</strong>
+                    </div>
+                `;
+            } else {
+                box.innerHTML = `
+                    <div class="text-xs font-bold uppercase text-brand-700">Conversión decimal directa:</div>
+                    <div class="text-slate-800 font-mono text-sm py-1">
+                        ${val}° · (π / 180°) ≈ <strong class="text-brand-700 text-base">${radDec} rad</strong>
+                    </div>
+                `;
+            }
+        }
+
+        function updateCalcAlert() {
+            const val = parseFloat(document.getElementById('calc-test-input').value) || 0;
+            const sinDeg = Math.sin(val * Math.PI / 180).toFixed(4).replace('.', ',');
+            const sinRad = Math.sin(val).toFixed(4).replace('.', ',');
+            document.getElementById('calc-deg-out').textContent = `sin(${val}°) = ${sinDeg}`;
+            document.getElementById('calc-rad-out').textContent = `sin(${val} rad) = ${sinRad}`;
+        }
+
+        const NOTABLE_ANGLES = [
+            { deg: 0, rad: '0 / 2π', quad: 'Eje +X', mental: 'Punto de partida (0 radios) o vuelta completa (2π rad).' },
+            { deg: 30, rad: 'π/6', quad: 'I Cuadrante', mental: 'La sexta parte de 180° (180° / 6).' },
+            { deg: 45, rad: 'π/4', quad: 'I Cuadrante', mental: 'La cuarta parte de 180° (mitad de 90°).' },
+            { deg: 60, rad: 'π/3', quad: 'I Cuadrante', mental: 'La tercera parte de 180° (180° / 3).' },
+            { deg: 90, rad: 'π/2', quad: 'Eje +Y', mental: 'La mitad exacta de media vuelta (180° / 2).' },
+            { deg: 120, rad: '2π/3', quad: 'II Cuadrante', mental: 'Dos veces 60° (2 × π/3).' },
+            { deg: 135, rad: '3π/4', quad: 'II Cuadrante', mental: 'Tres cuartos de media vuelta (3 × 45°).' },
+            { deg: 150, rad: '5π/6', quad: 'II Cuadrante', mental: 'Cinco veces 30° (o 180° - 30° = π - π/6).' },
+            { deg: 180, rad: 'π', quad: 'Eje -X', mental: 'Media vuelta completa (3,1416 radios).' },
+            { deg: 210, rad: '7π/6', quad: 'III Cuadrante', mental: 'Media vuelta más 30° (π + π/6).' },
+            { deg: 225, rad: '5π/4', quad: 'III Cuadrante', mental: 'Media vuelta más 45° (π + π/4).' },
+            { deg: 240, rad: '4π/3', quad: 'III Cuadrante', mental: 'Cuatro veces 60° (π + π/3).' },
+            { deg: 270, rad: '3π/2', quad: 'Eje -Y', mental: 'Tres medios de π (270° = 3 × 90°).' },
+            { deg: 300, rad: '5π/3', quad: 'IV Cuadrante', mental: 'Cinco veces 60° (2π - π/3).' },
+            { deg: 315, rad: '7π/4', quad: 'IV Cuadrante', mental: 'Siete veces 45° (2π - π/4).' },
+            { deg: 330, rad: '11π/6', quad: 'IV Cuadrante', mental: 'Una vuelta menos 30° (2π - π/6).' }
+        ];
+
+        function buildUnitCircleSVG() {
+            const svg = document.getElementById('unit-circle-svg');
+            if (!svg) return;
+            const R = 145;
+            let html = `
+                <line x1="-205" y1="0" x2="205" y2="0" stroke="#cbd5e1" stroke-width="1.5"/>
+                <line x1="0" y1="-205" x2="0" y2="205" stroke="#cbd5e1" stroke-width="1.5"/>
+                <circle cx="0" cy="0" r="${R}" fill="none" stroke="#144178" stroke-width="2.5"/>
+            `;
+
+            NOTABLE_ANGLES.forEach(item => {
+                const rad = item.deg * Math.PI / 180;
+                const x = (R * Math.cos(-rad)).toFixed(1);
+                const y = (R * Math.sin(-rad)).toFixed(1);
+                const lx = ((R + 36) * Math.cos(-rad)).toFixed(1);
+                const ly = ((R + 36) * Math.sin(-rad)).toFixed(1);
+                const isDiag = item.deg % 45 === 0 && item.deg % 90 !== 0;
+                const isAxis = item.deg % 90 === 0;
+                const color = isAxis ? '#19824b' : (isDiag ? '#be2828' : '#144178');
+
+                html += `
+                    <g class="cursor-pointer" onclick="selectNotableAngle(${item.deg})">
+                        <line x1="0" y1="0" x2="${x}" y2="${y}" stroke="${color}" stroke-opacity="0.25" stroke-width="1.2" ${isDiag ? 'stroke-dasharray="4,3"' : ''}/>
+                        <circle id="gonio-dot-${item.deg}" cx="${x}" cy="${y}" r="6" fill="${color}" stroke="#ffffff" stroke-width="2"/>
+                        <text x="${lx}" y="${ly}" fill="${color}" font-size="11" font-weight="bold" text-anchor="middle" dominant-baseline="middle">${item.rad}</text>
+                    </g>
+                `;
+            });
+
+            svg.innerHTML = html;
+        }
+
+        function selectNotableAngle(deg) {
+            const item = NOTABLE_ANGLES.find(a => a.deg === deg) || NOTABLE_ANGLES[3];
+            document.getElementById('gonio-deg').textContent = `${item.deg}°`;
+            document.getElementById('gonio-rad').textContent = `${item.rad} rad`;
+            document.getElementById('gonio-quad').textContent = item.quad;
+            document.getElementById('gonio-mental').innerHTML = `<strong>Lectura mental:</strong> ${item.mental}`;
+
+            const rad = item.deg * Math.PI / 180;
+            document.getElementById('gonio-cos').textContent = Math.cos(rad).toFixed(3).replace('.', ',');
+            document.getElementById('gonio-sin').textContent = Math.sin(rad).toFixed(3).replace('.', ',');
+
+            NOTABLE_ANGLES.forEach(a => {
+                const dot = document.getElementById(`gonio-dot-${a.deg}`);
+                if (dot) {
+                    dot.setAttribute('r', a.deg === deg ? '9' : '6');
+                }
+            });
+        }
+
+        // --- 5. INTERACCIÓN CON LOS EJERCICIOS Y EXPORTACIÓN LATEX ---
+        function toggleSolution(id) {
+            const box = document.getElementById('sol-box-' + id);
+            const btnText = document.getElementById('sol-btn-text-' + id);
+            const isHidden = box.classList.contains('hidden');
+            if (isHidden) {
+                box.classList.remove('hidden');
+                btnText.textContent = 'Ocultar solución';
+            } else {
+                box.classList.add('hidden');
+                btnText.textContent = 'Ver solución detallada';
+            }
+        }
+
+        let allSolutionsOpen = false;
+        function toggleAllSolutions() {
+            allSolutionsOpen = !allSolutionsOpen;
+            for (let i = 1; i <= 8; i++) {
+                const box = document.getElementById('sol-box-' + i);
+                const btnText = document.getElementById('sol-btn-text-' + i);
+                if (allSolutionsOpen) {
+                    box.classList.remove('hidden');
+                    btnText.textContent = 'Ocultar solución';
+                } else {
+                    box.classList.add('hidden');
+                    btnText.textContent = 'Ver solución detallada';
+                }
+            }
+        }
+
+        function filterExercises(level) {
+            document.querySelectorAll('.ex-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-brand-700', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-700');
+            });
+            const active = document.getElementById('filter-' + level);
+            active.classList.remove('bg-slate-100', 'text-slate-700');
+            active.classList.add('bg-brand-700', 'text-white');
+
+            document.querySelectorAll('.exercise-card').forEach(card => {
+                if (level === 'all' || card.dataset.level === level) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function copyLatexCode() {
+            const textarea = document.getElementById('latex-source-area');
+            textarea.select();
+            document.execCommand('copy');
+            const toast = document.getElementById('copy-toast');
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        function downloadLatexFile() {
+            const content = document.getElementById('latex-source-area').value;
+            const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'apuntes_grados_y_radianes_1bach.tex';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // --- INICIALIZACIÓN AL CARGAR LA PÁGINA ---
+        window.onload = function () {
+            if (window.renderMathInElement) {
+                renderMathInElement(document.body, {
+                    delimiters: [
+                        { left: '$$', right: '$$', display: true },
+                        { left: '\\(', right: '\\)', display: false }
+                    ]
+                });
+            }
+            initCanvasInteractions();
+            updateLabUI();
+            runStepByStepConversion();
+            updateCalcAlert();
+            buildUnitCircleSVG();
+            selectNotableAngle(60);
+        };
+    </script>
+</body>
+</html>
